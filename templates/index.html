@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h2>Hello!</h2>
+    <p>Type any pokemon name in the below text field to know it's abilities</p>
+    <div style="display: none;"> <label for="url-input" class="Input-module__prefix--1t9gQ">
+            <span>Resource URL:</span type="hidden"> https://pokeapi.co/api/v2/pokemon/</label>
+    </div>
+    <input id="url-input" class="Input-module__input--3Zr-s" type="text" value="pikachu">
+    <button id="showabilities" onclick="return getData()">Submit</button>
+    <div id="pokemonabilities"></div>
+</body>
+</html>
+<script>
+    $(document).ready(function () { });
+   $("#showabilities").click(function(){
+        var pokemon = $('#url-input').val();
+        var url = "https://pokeapi.co/api/v2/pokemon/" + pokemon;
+        var html = "<ul class='list-group'>";
+        $.getJSON(url, function (data) {
+            if (data) {
+                var abilities = data.abilities;
+                for (var i = 0; i < abilities.length; i++) {
+                    html += "<li class='list-group-item'>" + abilities[i].ability.name + "</li>";
+                }
+            } else {
+                html += "<li class='list-group-item'>May be its not a pokemon..Try another one</li>";
+            }
+            html += "</ul>";
+            $('#pokemonabilities').html(html);
+        }).done(function() { console.log(" success"); })
+          .fail(function() { 
+            html += "<li class='list-group-item'>May be its not a pokemon..Try another one</li>";
+           }).always(function() {html += "</ul>";
+            $('#pokemonabilities').html(html);
+            $('#pokemonabilities').show();
+        });
+      
+    });
+</script>
